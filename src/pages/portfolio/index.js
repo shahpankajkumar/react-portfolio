@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { dataportfolio, meta } from "../../content_option";
 
 export const Portfolio = () => {
@@ -22,9 +22,9 @@ export const Portfolio = () => {
         <div className="mb-5">
           {dataportfolio.map((data, i) => {
             return (
-              <Card className="mb-5" >
+              <Card className="mb-5" key={i} style={{backgroundColor:'black'}} >
                 <Card.Body>
-                  <Card.Text style={{color:'grey'}}>
+                  <Card.Text style={{color:'white'}}>
                   {data.description}
                   </Card.Text>
                   <a href={data.link} style={{color:'blue'}}>view project</a>
