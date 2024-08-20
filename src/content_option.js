@@ -38,11 +38,11 @@ const worktimeline = [
 const skills = [
   {
     name: "React.js",
-    value: 100,
+    value: 85,
   },
   {
     name: "Node.js",
-    value: 90,
+    value: 76,
   },
   {
     name: "Javascript",
@@ -58,15 +58,19 @@ const skills = [
   },
   {
     name: "MySQL",
-    value: 75,
+    value: 60,
   },
   {
     name: "Material UI",
-    value: 100,
+    value: 85,
   },
   {
     name: "Redux",
-    value: 100,
+    value: 86,
+  },
+  {
+    name: "Redux-Saga",
+    value: 70,
   },
   {
     name: "Tailwind",
@@ -74,7 +78,7 @@ const skills = [
   },
   {
     name: "Bootstrap",
-    value: 100,
+    value: 88,
   },
   {
     name: "Github",
@@ -82,7 +86,7 @@ const skills = [
   },
   {
     name: "Antd",
-    value: 100,
+    value: 75,
   },
 ];
 
