@@ -27,7 +27,7 @@ export const Portfolio = () => {
                   <Card.Text style={{color:'white'}}>
                   {data.description}
                   </Card.Text>
-                  <a href={data.link} style={{color:'blue'}}>view project</a>
+                  <a target="_blank" href={data.link} style={{color:'blue'}}>view project</a>
                 </Card.Body>
             </Card>
             );
