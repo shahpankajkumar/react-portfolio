@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import * as emailjs from "emailjs-com";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { meta } from "../../content_option";
 import { Container, Row, Col, Alert } from "react-bootstrap";
-import { contactConfig } from "../../content_option";
+import { contactConfig, secret } from "../../content_option";
 
 export const ContactUs = () => {
   const [formData, setFormdata] = useState({
@@ -17,44 +18,54 @@ export const ContactUs = () => {
     variant: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setFormdata({ loading: true });
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
 
-    const templateParams = {
-      from_name: formData.email,
-      user_name: formData.name,
-      to_name: contactConfig.YOUR_EMAIL,
-      message: formData.message,
+  // Handle the reCAPTCHA token when the user interacts with the widget
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!recaptchaToken) {
+      setFormdata({
+        alertmessage: "Please fill the reCAPTCHA",
+        variant: "danger",
+        show: true,
+      });
+      document.getElementsByClassName("co_alert")[0].scrollIntoView();
+      return;
+    }
+
+    const formDataValues = {
+      name: formData.name,
+      email: formData.email,
+      text: formData.message,
+      recaptchaToken: recaptchaToken,
     };
 
-    emailjs
-      .send(
-        contactConfig.YOUR_SERVICE_ID,
-        contactConfig.YOUR_TEMPLATE_ID,
-        templateParams,
-        contactConfig.YOUR_USER_ID
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-          setFormdata({
-            loading: false,
-            alertmessage: "SUCCESS! ,Thankyou for your messege",
-            variant: "success",
-            show: true,
-          });
-        },
-        (error) => {
-          console.log(error.text);
-          setFormdata({
-            alertmessage: `Faild to send!,${error.text}`,
-            variant: "danger",
-            show: true,
-          });
-          document.getElementsByClassName("co_alert")[0].scrollIntoView();
-        }
+    try {
+      setFormdata({ loading: true });
+      // Send the form data and reCAPTCHA token to the server
+      const response = await axios.post(
+        "http://localhost:4000/api/email/send-email",
+        formDataValues
       );
+      console.log("Server Response:", response.data);
+      setFormdata({
+        loading: false,
+        alertmessage: "SUCCESS! ,Thankyou for your messege",
+        variant: "success",
+        show: true,
+        email: "",
+        name: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setFormdata({
+        alertmessage: `Faild to send!,${error.text}`,
+        variant: "danger",
+        show: true,
+      });
+      document.getElementsByClassName("co_alert")[0].scrollIntoView();
+    }
   };
 
   const handleChange = (e) => {
@@ -145,11 +156,19 @@ export const ContactUs = () => {
                 name="message"
                 placeholder="Message"
                 rows="5"
-                value={formData.message}
+                value={formData.message || ""}
                 onChange={handleChange}
                 required
               ></textarea>
               <br />
+              <Row>
+                <Col lg="12" className="form-group">
+                  <ReCAPTCHA
+                    sitekey={secret.key}
+                    onChange={(value) => setRecaptchaToken(value)}
+                  />
+                </Col>
+              </Row>
               <Row>
                 <Col lg="12" className="form-group">
                   <button className="btn ac_btn" type="submit">
@@ -165,3 +184,5 @@ export const ContactUs = () => {
     </HelmetProvider>
   );
 };
+
+

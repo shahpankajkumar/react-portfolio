@@ -159,6 +159,11 @@ const socialprofils = {
     "https://www.linkedin.com/in/shah-pankaj-7a729018a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
   twitter: "https://twitter.com",
 };
+
+const secret = {
+  key:"6LeWQUUqAAAAALltLMz1osoEahzT1HOlRtBVBURO"
+};
+
 export {
   meta,
   dataabout,
@@ -170,4 +175,5 @@ export {
   contactConfig,
   socialprofils,
   logotext,
+  secret
 };
