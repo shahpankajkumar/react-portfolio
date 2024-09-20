@@ -44,7 +44,7 @@ export const ContactUs = () => {
       setFormdata({ loading: true });
       // Send the form data and reCAPTCHA token to the server
       const response = await axios.post(
-        "http://localhost:4000/api/email/send-email",
+        "https://react-portfolio-backend-one.vercel.app/api/email/send-email",
         formDataValues
       );
       console.log("Server Response:", response.data);
